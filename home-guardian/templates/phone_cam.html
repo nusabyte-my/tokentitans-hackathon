@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>GuardianBox · Mobile Camera Node</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body { background-color: #04060A; color: #E2E8F0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .hairline-border { border: 1px solid rgba(255, 255, 255, 0.1); }
+  </style>
+</head>
+<body class="h-screen w-screen flex flex-col justify-between overflow-hidden select-none">
+
+  <!-- TOP HEADER -->
+  <header class="p-3 bg-[#070A10] border-b border-white/[0.08] flex items-center justify-between z-10">
+    <div class="flex items-center space-x-2">
+      <div class="w-6 h-6 rounded bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+        <i data-lucide="smartphone" class="w-3.5 h-3.5"></i>
+      </div>
+      <div>
+        <div class="text-xs font-bold text-white tracking-wide">GUARDIANBOX · MOBILE NODE</div>
+        <div class="text-[9px] text-zinc-400 font-mono">Connected to NVIDIA DGX Spark</div>
+      </div>
+    </div>
+    <div id="connStatus" class="px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[10px] font-mono flex items-center space-x-1">
+      <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+      <span id="connText">CONNECTING...</span>
+    </div>
+  </header>
+
+  <!-- CAMERA VIEWPORT -->
+  <main class="flex-1 relative bg-black flex items-center justify-center overflow-hidden">
+    <video id="phoneVideo" autoplay playsinline muted class="w-full h-full object-cover"></video>
+    <canvas id="captureCanvas" class="hidden"></canvas>
+
+    <!-- Overlay Guidelines & Stats -->
+    <div class="absolute inset-0 pointer-events-none p-4 flex flex-col justify-between">
+      <div class="flex justify-between items-start">
+        <div class="bg-black/60 backdrop-blur px-2 py-1 rounded text-[10px] font-mono text-zinc-300 border border-white/10">
+          <div>STREAM: <span id="fpsCount" class="text-emerald-400 font-bold">0 FPS</span></div>
+          <div>RES: <span id="resText" class="text-white">640x480</span></div>
+        </div>
+        <div class="bg-emerald-950/70 border border-emerald-500/40 px-2 py-1 rounded text-[10px] font-mono text-emerald-300">
+          🔒 LOCAL ENCRYPTED
+        </div>
+      </div>
+
+      <!-- Hairline Center Crosshairs -->
+      <div class="self-center w-48 h-48 border border-white/20 rounded-lg flex items-center justify-center">
+        <div class="w-2 h-2 bg-emerald-400/60 rounded-full"></div>
+      </div>
+
+      <div class="text-center text-[11px] font-mono text-zinc-400 bg-black/50 backdrop-blur py-1 rounded">
+        Point phone camera at patient living area
+      </div>
+    </div>
+  </main>
+
+  <!-- BOTTOM CONTROLS -->
+  <footer class="p-3 bg-[#070A10] border-t border-white/[0.08] flex items-center justify-around z-10">
+    <button onclick="switchCamera()" class="px-4 py-2 rounded bg-zinc-900 border border-white/10 text-zinc-200 text-xs font-mono flex items-center space-x-1.5 active:scale-95 transition">
+      <i data-lucide="refresh-cw" class="w-4 h-4 text-emerald-400"></i>
+      <span>Flip Cam</span>
+    </button>
+    <button id="btnPause" onclick="toggleStream()" class="px-5 py-2 rounded bg-emerald-950 border border-emerald-600/50 text-emerald-200 text-xs font-mono font-bold flex items-center space-x-1.5 active:scale-95 transition">
+      <i data-lucide="video" class="w-4 h-4"></i>
+      <span id="btnStreamText">Streaming Active</span>
+    </button>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+
+    let video = document.getElementById('phoneVideo');
+    let canvas = document.getElementById('captureCanvas');
+    let ctx = canvas.getContext('2d');
+    let ws;
+    let isStreaming = true;
+    let currentFacingMode = 'environment'; // Back camera by default
+    let streamInterval;
+    let frameCount = 0;
+
+    // FPS Counter
+    setInterval(() => {
+      document.getElementById('fpsCount').innerText = `${frameCount} FPS`;
+      frameCount = 0;
+    }, 1000);
+
+    async function initCamera() {
+      try {
+        if (window.localStream) {
+          window.localStream.getTracks().forEach(track => track.stop());
+        }
+        const constraints = {
+          video: {
+            facingMode: { ideal: currentFacingMode },
+            width: { ideal: 640 },
+            height: { ideal: 480 }
+          },
+          audio: false
+        };
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        window.localStream = stream;
+        video.srcObject = stream;
+        video.onloadedmetadata = () => {
+          canvas.width = 640;
+          canvas.height = 480;
+          document.getElementById('resText').innerText = `${video.videoWidth || 640}x${video.videoHeight || 480}`;
+        };
+      } catch (err) {
+        console.error("Camera access error:", err);
+        alert("Camera access denied or unavailable: " + err.message);
+      }
+    }
+
+    function switchCamera() {
+      currentFacingMode = (currentFacingMode === 'environment') ? 'user' : 'environment';
+      initCamera();
+    }
+
+    function toggleStream() {
+      isStreaming = !isStreaming;
+      const btnText = document.getElementById('btnStreamText');
+      if (isStreaming) {
+        btnText.innerText = "Streaming Active";
+        document.getElementById('btnPause').className = "px-5 py-2 rounded bg-emerald-950 border border-emerald-600/50 text-emerald-200 text-xs font-mono font-bold flex items-center space-x-1.5 active:scale-95 transition";
+      } else {
+        btnText.innerText = "Stream Paused";
+        document.getElementById('btnPause').className = "px-5 py-2 rounded bg-zinc-900 border border-zinc-700 text-zinc-400 text-xs font-mono font-bold flex items-center space-x-1.5 active:scale-95 transition";
+      }
+    }
+
+    function connectWebSocket() {
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const wsUrl = `${protocol}//${window.location.host}/ws/phone_camera`;
+      ws = new WebSocket(wsUrl);
+
+      ws.onopen = () => {
+        document.getElementById('connStatus').className = "px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-mono flex items-center space-x-1";
+        document.getElementById('connText').innerText = "LIVE TO DGX SPARK";
+        startFramePump();
+      };
+
+      ws.onclose = () => {
+        document.getElementById('connStatus').className = "px-2 py-0.5 rounded bg-red-500/20 border border-red-500/40 text-red-300 text-[10px] font-mono flex items-center space-x-1";
+        document.getElementById('connText').innerText = "DISCONNECTED";
+        clearInterval(streamInterval);
+        setTimeout(connectWebSocket, 2000);
+      };
+    }
+
+    function startFramePump() {
+      clearInterval(streamInterval);
+      streamInterval = setInterval(() => {
+        if (!isStreaming || !ws || ws.readyState !== WebSocket.OPEN) return;
+        if (video.readyState < video.HAVE_CURRENT_DATA) return;
+
+        ctx.drawImage(video, 0, 0, 640, 480);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.65);
+        // Send base64 payload
+        ws.send(JSON.stringify({ frame: dataUrl, timestamp: Date.now() }));
+        frameCount++;
+      }, 66); // ~15 FPS
+    }
+
+    // Startup
+    initCamera();
+    connectWebSocket();
+  </script>
+</body>
+</html>

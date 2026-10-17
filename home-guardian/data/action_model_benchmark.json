@@ -1,0 +1,233 @@
+{
+  "base_model_name": "Base Nemotron (General LLM)",
+  "fine_tuned_model_name": "Nemotron-Action-v2 (Fine-Tuned Adapter)",
+  "base_accuracy": 62.3,
+  "fine_tuned_accuracy": 95.8,
+  "accuracy_delta": 33.5,
+  "sujud_false_alarm_before": 44.0,
+  "sujud_false_alarm_after": 0.0,
+  "training_samples": 576,
+  "validation_samples": 144,
+  "epochs_trained": 35,
+  "inference_latency_ms": 6.7,
+  "loss_curve": [
+    {
+      "epoch": 1,
+      "train_loss": 0.5681,
+      "val_loss": 0.4374,
+      "val_accuracy": 91.7
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.266,
+      "val_loss": 0.1536,
+      "val_accuracy": 95.1
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.1769,
+      "val_loss": 0.1428,
+      "val_accuracy": 95.1
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.2054,
+      "val_loss": 0.1586,
+      "val_accuracy": 92.4
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.1575,
+      "val_loss": 0.1393,
+      "val_accuracy": 94.4
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.1523,
+      "val_loss": 0.1857,
+      "val_accuracy": 93.1
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.132,
+      "val_loss": 0.148,
+      "val_accuracy": 95.1
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.1851,
+      "val_loss": 0.15,
+      "val_accuracy": 93.1
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.147,
+      "val_loss": 0.1457,
+      "val_accuracy": 93.8
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.1691,
+      "val_loss": 0.1016,
+      "val_accuracy": 95.8
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.104,
+      "val_loss": 0.1012,
+      "val_accuracy": 96.5
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.1204,
+      "val_loss": 0.157,
+      "val_accuracy": 93.1
+    },
+    {
+      "epoch": 13,
+      "train_loss": 0.1006,
+      "val_loss": 0.0934,
+      "val_accuracy": 95.1
+    },
+    {
+      "epoch": 14,
+      "train_loss": 0.1374,
+      "val_loss": 0.1212,
+      "val_accuracy": 95.8
+    },
+    {
+      "epoch": 15,
+      "train_loss": 0.1142,
+      "val_loss": 0.1197,
+      "val_accuracy": 96.5
+    },
+    {
+      "epoch": 16,
+      "train_loss": 0.1301,
+      "val_loss": 0.0919,
+      "val_accuracy": 95.1
+    },
+    {
+      "epoch": 17,
+      "train_loss": 0.103,
+      "val_loss": 0.1214,
+      "val_accuracy": 95.1
+    },
+    {
+      "epoch": 18,
+      "train_loss": 0.105,
+      "val_loss": 0.0951,
+      "val_accuracy": 96.5
+    },
+    {
+      "epoch": 19,
+      "train_loss": 0.0884,
+      "val_loss": 0.0925,
+      "val_accuracy": 95.8
+    },
+    {
+      "epoch": 20,
+      "train_loss": 0.0854,
+      "val_loss": 0.1117,
+      "val_accuracy": 95.1
+    },
+    {
+      "epoch": 21,
+      "train_loss": 0.0741,
+      "val_loss": 0.092,
+      "val_accuracy": 97.2
+    },
+    {
+      "epoch": 22,
+      "train_loss": 0.0932,
+      "val_loss": 0.0849,
+      "val_accuracy": 97.2
+    },
+    {
+      "epoch": 23,
+      "train_loss": 0.0759,
+      "val_loss": 0.1004,
+      "val_accuracy": 97.2
+    },
+    {
+      "epoch": 24,
+      "train_loss": 0.0946,
+      "val_loss": 0.1052,
+      "val_accuracy": 95.1
+    },
+    {
+      "epoch": 25,
+      "train_loss": 0.0692,
+      "val_loss": 0.0997,
+      "val_accuracy": 95.8
+    },
+    {
+      "epoch": 26,
+      "train_loss": 0.0562,
+      "val_loss": 0.0988,
+      "val_accuracy": 95.8
+    },
+    {
+      "epoch": 27,
+      "train_loss": 0.0895,
+      "val_loss": 0.101,
+      "val_accuracy": 95.8
+    },
+    {
+      "epoch": 28,
+      "train_loss": 0.0817,
+      "val_loss": 0.1027,
+      "val_accuracy": 95.8
+    },
+    {
+      "epoch": 29,
+      "train_loss": 0.0818,
+      "val_loss": 0.1081,
+      "val_accuracy": 95.1
+    },
+    {
+      "epoch": 30,
+      "train_loss": 0.0689,
+      "val_loss": 0.0901,
+      "val_accuracy": 95.8
+    },
+    {
+      "epoch": 31,
+      "train_loss": 0.0579,
+      "val_loss": 0.0894,
+      "val_accuracy": 95.8
+    },
+    {
+      "epoch": 32,
+      "train_loss": 0.0606,
+      "val_loss": 0.096,
+      "val_accuracy": 95.8
+    },
+    {
+      "epoch": 33,
+      "train_loss": 0.0446,
+      "val_loss": 0.0925,
+      "val_accuracy": 95.8
+    },
+    {
+      "epoch": 34,
+      "train_loss": 0.0582,
+      "val_loss": 0.0928,
+      "val_accuracy": 95.8
+    },
+    {
+      "epoch": 35,
+      "train_loss": 0.0927,
+      "val_loss": 0.0932,
+      "val_accuracy": 95.8
+    }
+  ],
+  "class_names": [
+    "WALKING_AMBULATION",
+    "ISLAMIC_PRAYER_SUJUD",
+    "ACUTE_SLIP_FALL",
+    "ACUTE_PRONE_FALL",
+    "LATERAL_IMPACT_FALL",
+    "CHOKING_AND_COLLAPSE"
+  ]
+}

@@ -1,0 +1,30 @@
+# Environment & Secrets (Never commit credentials)
+.env
+.env.local
+*.env
+
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Logs & Temporary files
+*.log
+logs/
+temp/
+.tmp*
+
+# OS Specific
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GuardianBox — Sovereign Edge AI | NVIDIA DGX Spark</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    :root {
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    body {
+      background-color: #FFFFFF;
+      font-family: var(--font-body);
+      color: #0F172A;
+      overflow-x: hidden;
+    }
+
+    .font-display {
+      font-family: var(--font-display);
+    }
+    .font-mono {
+      font-family: var(--font-mono);
+    }
+
+    /* Jebat Creative: Dot Grid Background */
+    .jebat-dot-grid {
+      background-image: radial-gradient(circle, #CBD5E1 1.2px, transparent 1.2px);
+      background-size: 24px 24px;
+    }
+
+    /* Harsh Gradient Utility */
+    .bg-gradient-harsh {
+      background: linear-gradient(90deg, #7C3AED 0%, #7C3AED 50%, #EC4899 50%, #EC4899 100%);
+    }
+    .bg-gradient-brand {
+      background: linear-gradient(135deg, #7C3AED 0%, #9333EA 50%, #EC4899 100%);
+    }
+
+    /* Liquid Glass on White Base */
+    .jebat-glass-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 20px 45px -15px rgba(124, 58, 237, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.03);
+    }
+
+    .jebat-glass-hover {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .jebat-glass-hover:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 25px 50px -12px rgba(124, 58, 237, 0.16);
+      border-color: rgba(167, 139, 250, 0.6);
+    }
+
+    /* Purple-Black Anchor Terminal */
+    .jebat-terminal {
+      background: #0A0118;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      box-shadow: 0 25px 50px -12px rgba(10, 1, 24, 0.5);
+    }
+
+    /* Waveform Animation */
+    @keyframes wave {
+      0%, 100% { height: 4px; }
+      50% { height: 26px; }
+    }
+    .wave-bar {
+      animation: wave 1.2s ease-in-out infinite;
+    }
+    .wave-bar:nth-child(2) { animation-delay: 0.15s; }
+    .wave-bar:nth-child(3) { animation-delay: 0.3s; }
+    .wave-bar:nth-child(4) { animation-delay: 0.45s; }
+    .wave-bar:nth-child(5) { animation-delay: 0.2s; }
+    .wave-bar:nth-child(6) { animation-delay: 0.35s; }
+    .wave-bar:nth-child(7) { animation-delay: 0.5s; }
+    .wave-bar:nth-child(8) { animation-delay: 0.1s; }
+
+    /* Emergency Pulsing Pulse */
+    @keyframes pulse-emergency {
+      0%, 100% { border-color: rgba(239, 68, 68, 0.5); box-shadow: 0 0 20px rgba(239, 68, 68, 0.25); }
+      50% { border-color: rgba(239, 68, 68, 1); box-shadow: 0 0 45px rgba(239, 68, 68, 0.5); }
+    }
+    .emergency-active {
+      animation: pulse-emergency 1.5s infinite;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-violet-500/20 selection:text-violet-700 jebat-dot-grid relative">
+
+  <!-- BACKGROUND RADIAL ORBS -->
+  <div class="fixed top-0 left-1/4 w-[500px] h-[500px] bg-violet-400/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+  <div class="fixed top-1/3 right-10 w-[450px] h-[450px] bg-pink-400/10 rounded-full blur-[110px] pointer-events-none -z-10"></div>
+  <div class="fixed bottom-10 left-10 w-[400px] h-[400px] bg-cyan-400/10 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+
+  <!-- TOP LAKSAMANA NAVIGATION BAR (LIGHT GLASS) -->
+  <header class="w-full bg-white/80 backdrop-blur-md border-b border-slate-200/80 px-6 py-3.5 sticky top-0 z-50 flex items-center justify-between">
+    <div class="flex items-center space-x-5">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-brand flex items-center justify-center text-white shadow-[0_10px_20px_-5px_rgba(124,58,237,0.4)]">
+          <i data-lucide="shield-check" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="font-display font-bold text-xl text-slate-900 tracking-tight">GUARDIAN<span class="text-violet-600">BOX</span></span>
+            <span class="text-[10px] font-mono tracking-widest uppercase font-bold px-2 py-0.5 rounded-full bg-violet-50 text-violet-700 border border-violet-200">Edge Swarm</span>
+          </div>
+          <p class="text-[11px] text-slate-500 font-medium">Sovereign Geriatric Tele-Triage & Fall Escalation</p>
+        </div>
+      </div>
+
+      <div class="hidden xl:flex items-center space-x-2.5 text-xs font-mono text-slate-500 border-l border-slate-200 pl-5">
+        <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 border border-slate-200 font-semibold flex items-center space-x-1">
+          <i data-lucide="cpu" class="w-3.5 h-3.5 text-violet-600"></i>
+          <span>GB10 Grace Blackwell</span>
+        </span>
+        <span class="px-2.5 py-1 rounded-lg bg-violet-50 text-violet-700 border border-violet-200/80 font-bold">
+          128 GB Unified LPDDR5x · 273 GB/s
+        </span>
+        <span id="vllmPill" class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold flex items-center space-x-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          <span>vLLM: CONNECTED</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="flex items-center space-x-2 text-xs font-mono">
+      <button onclick="toggleSoundAlert()" id="btnSoundToggle" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 border border-red-300 text-red-700 font-mono text-xs font-bold transition shadow-sm active:scale-95">
+        <i data-lucide="volume-2" class="w-3.5 h-3.5 text-red-600"></i>
+        <span id="soundToggleText">Sound Alert: ON 🔊</span>
+      </button>
+      <a href="https://t.me/GuardianBox_bot" target="_blank" class="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-full bg-[#0088cc]/10 hover:bg-[#0088cc]/20 border border-[#0088cc]/30 text-[#0088cc] font-bold transition shadow-sm">
+        <i data-lucide="send" class="w-3.5 h-3.5"></i>
+        <span>@GuardianBox_bot</span>
+      </a>
+      <div id="statusBadge" class="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span id="statusText" class="font-bold tracking-wide">SYSTEM: NORMAL</span>
+      </div>
+
+      <div class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-600">
+        <i data-lucide="clock" class="w-3.5 h-3.5 text-slate-400"></i>
+        <span id="liveClock" class="font-bold">--:--:-- MYT</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- EMERGENCY STATUTORY BANNER (LOUD CRIMSON STRIPE) -->
+  <div id="emergencyBanner" class="hidden w-full bg-red-600 text-white px-6 py-3 border-b-2 border-red-700 shadow-lg flex items-center justify-between z-40 transition-all">
+    <div class="flex items-center space-x-3 font-mono text-xs">
+      <span class="w-3 h-3 rounded-full bg-white animate-ping"></span>
+      <span class="font-bold uppercase tracking-wider text-sm">🚨 KOD MERAH: ACUTE FALL DETECTED</span>
+      <span class="text-red-100 font-normal">|</span>
+      <span id="emergencyBriefingText" class="text-white font-medium">Unresponsive subject in Living Room. MERS 999 Incident Dossier prepared.</span>
+    </div>
+    <div class="flex items-center space-x-2">
+      <a href="tel:999" class="px-3.5 py-1.5 bg-white text-red-700 hover:bg-red-50 font-display font-bold text-xs rounded-lg shadow transition flex items-center space-x-1">
+        <i data-lucide="phone-call" class="w-3.5 h-3.5"></i>
+        <span>Dial 999 Direct</span>
+      </a>
+      <button onclick="simulateTelegramAction('ACTION:FAMILY_CLEAR')" class="px-3 py-1.5 bg-red-800 hover:bg-red-900 text-white text-xs rounded-lg transition font-mono">
+        Family Clear (I'm OK)
+      </button>
+      <button onclick="resetSystem()" class="px-2.5 py-1.5 bg-black/40 hover:bg-black/60 text-white text-xs rounded-lg transition font-mono">
+        Reset
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN COCKPIT -->
+  <main class="flex-1 p-5 lg:p-7 grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-[1780px] mx-auto w-full">
+
+    <!-- LEFT COLUMN: LIVE VIDEO & 5-AGENT SWARM CONSENSUS (7 COLS) -->
+    <div class="lg:col-span-7 flex flex-col space-y-5">
+
+      <!-- MAIN VIDEO VIEWPORT CARD -->
+      <div id="videoCard" class="jebat-glass-card rounded-2xl overflow-hidden flex flex-col border border-slate-200/90 shadow-[0_20px_50px_-15px_rgba(124,58,237,0.12)]">
+        
+        <!-- Viewport Header -->
+        <div class="bg-slate-50/90 px-5 py-3 border-b border-slate-200 flex items-center justify-between text-xs font-mono">
+          <div class="flex items-center space-x-2.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-violet-600 animate-pulse"></span>
+            <span class="font-bold text-slate-800 tracking-wide font-display text-sm">EDGE CAMERA 01</span>
+            <span class="text-slate-400">|</span>
+            <span class="text-slate-500">Living Room · 640x480 @ 30 FPS</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="text-[10px] font-bold text-violet-700 bg-violet-100/80 border border-violet-200 px-2.5 py-0.5 rounded-full">100% ON-PREMISES</span>
+            <span id="viewportModePill" class="text-[10px] font-bold text-slate-700 bg-white border border-slate-200 px-2.5 py-0.5 rounded-full uppercase">MODE: WALK</span>
+          </div>
+        </div>
+
+        <!-- Video Frame Container -->
+        <div class="relative bg-slate-950 aspect-[4/3] max-h-[460px] flex items-center justify-center overflow-hidden">
+          <img id="videoStream" src="/video_feed" alt="GuardianBox Edge Feed" class="w-full h-full object-contain" onerror="setTimeout(() => { this.src = '/video_feed?t=' + Date.now(); }, 1200);">
+          
+          <!-- Tactical HUD Watermarks -->
+          <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-200/90 shadow-sm text-xs font-mono flex items-center space-x-2">
+            <span class="text-slate-500 font-semibold text-[10px]">VERIFIED POSE:</span>
+            <span id="overlayPosture" class="text-violet-700 font-bold">UPRIGHT STANDING</span>
+          </div>
+          <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-200/90 shadow-sm text-xs font-mono flex items-center space-x-2">
+            <span class="text-slate-500 font-semibold text-[10px]">TIME ON FLOOR:</span>
+            <span id="overlayDuration" class="text-slate-900 font-bold">0.0s</span>
+          </div>
+        </div>
+
+        <!-- DEMO VIDEO & SCENARIO SELECTOR BAR (JEBAT CREATIVE) -->
+        <div class="p-4 bg-white border-t border-slate-200/80 flex flex-col space-y-3">
+          
+          <!-- Row 1: 6 Real Sample Demo Videos (Walking.mp4 is default) -->
+          <div class="flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-none">
+            <span class="text-slate-400 font-mono text-[10px] uppercase font-bold shrink-0">Demo Videos:</span>
+            
+            <button onclick="playSampleVideo('walking')" id="btnVidWalking" class="px-3.5 py-1.5 rounded-xl bg-violet-600 text-white font-mono text-xs font-bold flex items-center space-x-1.5 shrink-0 transition shadow-md active:scale-95">
+              <i data-lucide="footprints" class="w-3.5 h-3.5 text-white"></i>
+              <span>Walking.mp4 (Default)</span>
+            </button>
+            <button onclick="playSampleVideo('sujud')" class="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 font-mono text-xs font-bold flex items-center space-x-1.5 shrink-0 transition shadow-sm active:scale-95">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-600"></i>
+              <span>Sujud (Pray)</span>
+            </button>
+            <button onclick="playSampleVideo('acute_fall')" class="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-800 font-mono text-xs font-bold flex items-center space-x-1.5 shrink-0 transition shadow-sm active:scale-95">
+              <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-red-600"></i>
+              <span>Acute Fall</span>
+            </button>
+            <button onclick="playSampleVideo('fall_man')" class="px-3 py-1.5 rounded-xl bg-pink-50 hover:bg-pink-100 border border-pink-200 text-pink-800 font-mono text-xs font-bold flex items-center space-x-1.5 shrink-0 transition shadow-sm active:scale-95">
+              <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-pink-600"></i>
+              <span>Fall 1 Man</span>
+            </button>
+            <button onclick="playSampleVideo('woman_fall')" class="px-3.5 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-800 font-mono text-xs font-bold flex items-center space-x-1.5 shrink-0 transition shadow-sm active:scale-95">
+              <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-red-600"></i>
+              <span>Woman Fall</span>
+            </button>
+            <button onclick="playSampleVideo('choking_fall')" class="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-mono text-xs font-bold flex items-center space-x-1.5 shrink-0 transition shadow-sm active:scale-95">
+              <i data-lucide="activity" class="w-3.5 h-3.5 text-amber-600"></i>
+              <span>Choking & Fall</span>
+            </button>
+          </div>
+
+          <!-- Row 2: Live Ingestion & Pose Matrix Tools -->
+          <div class="flex items-center justify-between flex-wrap gap-2 pt-1 border-t border-slate-100">
+            <div class="flex items-center space-x-2">
+              <button onclick="document.getElementById('videoUploadInput').click()" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs font-semibold flex items-center space-x-1.5 shadow transition active:scale-95">
+                <i data-lucide="upload" class="w-3.5 h-3.5 text-amber-400"></i>
+                <span>Upload Video</span>
+              </button>
+              <input type="file" id="videoUploadInput" accept="video/mp4,video/webm,video/quicktime" class="hidden" onchange="handleVideoUpload(event)">
+
+              <button onclick="openPhoneQrModal()" class="px-3 py-1.5 rounded-xl bg-cyan-50 hover:bg-cyan-100 border border-cyan-200 text-cyan-800 font-mono text-xs font-semibold flex items-center space-x-1.5 transition active:scale-95">
+                <i data-lucide="smartphone" class="w-3.5 h-3.5 text-cyan-600"></i>
+                <span>Phone Cam (QR)</span>
+              </button>
+
+              <button onclick="openPoseModal()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 font-mono text-xs font-semibold flex items-center space-x-1.5 transition active:scale-95">
+                <i data-lucide="layers" class="w-3.5 h-3.5 text-violet-600"></i>
+                <span>11 Poses Catalog</span>
+              </button>
+            </div>
+
+            <div class="flex items-center space-x-2">
+              <button onclick="setScenario('live')" class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-mono text-xs flex items-center space-x-1 transition">
+                <i data-lucide="camera" class="w-3.5 h-3.5"></i>
+                <span>Webcam</span>
+              </button>
+              <button onclick="resetSystem()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-mono text-xs font-semibold flex items-center space-x-1 transition active:scale-95">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-slate-500"></i>
+                <span>Reset</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5-AGENT MULTI-ORCHESTRATION SWARM MATRIX (JEBAT RAINBOW CARDS) -->
+      <div class="jebat-glass-card rounded-2xl p-5 border border-slate-200/90 flex flex-col space-y-3.5">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
+          <div class="flex items-center space-x-2">
+            <div class="w-7 h-7 rounded-lg bg-violet-100 flex items-center justify-center text-violet-600">
+              <i data-lucide="users" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-base text-slate-900">5-Agent Sovereign Multi-Orchestrator</h3>
+              <p class="text-[11px] text-slate-500 font-mono">Parallel Nemotron Resident Swarm · Grace Blackwell NVLink Bus</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="text-xs font-mono text-slate-400 font-semibold">QUORUM CONSENSUS:</span>
+            <span id="quorumConsensusScore" class="font-display font-bold text-base text-violet-700 bg-violet-100 px-3 py-0.5 rounded-full border border-violet-200">98.0%</span>
+          </div>
+        </div>
+
+        <!-- Quorum Verdict Banner -->
+        <div id="quorumSummaryBanner" class="p-3 rounded-xl bg-slate-50 border border-slate-200/90 text-xs font-mono text-slate-700 flex items-center space-x-2.5">
+          <span id="quorumDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span id="quorumSummaryText" class="font-semibold text-slate-800">5-Agent Swarm resident in VRAM. Quorum consensus active.</span>
+        </div>
+
+        <!-- 5 Rainbow Swarm Deliberation Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-1">
+          
+          <!-- Agent 1: Violet Anchor -->
+          <div class="relative rounded-xl bg-white p-3 border border-violet-100 shadow-[0_10px_20px_-5px_rgba(124,58,237,0.12)] flex flex-col justify-between overflow-hidden">
+            <div class="absolute left-0 top-2 bottom-2 w-1 rounded-full bg-[#7C3AED]"></div>
+            <div>
+              <div class="flex items-center justify-between pl-1">
+                <span class="text-[9px] font-mono font-bold text-slate-400">A1 · KINETIC SENTINEL</span>
+                <span id="voteA1" class="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">CLEAR</span>
+              </div>
+              <div class="font-display font-bold text-xs text-slate-900 mt-1 pl-1">Kinetic Sentinel</div>
+              <div class="text-[9px] text-slate-400 font-mono pl-1">Trajectory & Impact</div>
+            </div>
+            <div class="text-[9px] font-mono text-violet-700 mt-2 font-semibold pl-1">Nano · 5.8 GB</div>
+          </div>
+
+          <!-- Agent 2: Pink Accent -->
+          <div class="relative rounded-xl bg-white p-3 border border-pink-100 shadow-[0_10px_20px_-5px_rgba(236,72,153,0.12)] flex flex-col justify-between overflow-hidden">
+            <div class="absolute left-0 top-2 bottom-2 w-1 rounded-full bg-[#EC4899]"></div>
+            <div>
+              <div class="flex items-center justify-between pl-1">
+                <span class="text-[9px] font-mono font-bold text-slate-400">A2 · SPATIAL VLM</span>
+                <span id="voteA2" class="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">CLEAR</span>
+              </div>
+              <div class="font-display font-bold text-xs text-slate-900 mt-1 pl-1">Omni Reasoner</div>
+              <div class="text-[9px] text-slate-400 font-mono pl-1">Multimodal Sujud VLM</div>
+            </div>
+            <div class="text-[9px] font-mono text-pink-700 mt-2 font-semibold pl-1">Cosmos · 16.5 GB</div>
+          </div>
+
+          <!-- Agent 3: Cyan Accent -->
+          <div class="relative rounded-xl bg-white p-3 border border-cyan-100 shadow-[0_10px_20px_-5px_rgba(6,182,212,0.12)] flex flex-col justify-between overflow-hidden">
+            <div class="absolute left-0 top-2 bottom-2 w-1 rounded-full bg-[#06B6D4]"></div>
+            <div>
+              <div class="flex items-center justify-between pl-1">
+                <span class="text-[9px] font-mono font-bold text-slate-400">A3 · VOCAL RESPONDER</span>
+                <span id="voteA3" class="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">CLEAR</span>
+              </div>
+              <div class="font-display font-bold text-xs text-slate-900 mt-1 pl-1">Vocal Care Triage</div>
+              <div class="text-[9px] text-slate-400 font-mono pl-1">Dialect Speech Parser</div>
+            </div>
+            <div class="text-[9px] font-mono text-cyan-700 mt-2 font-semibold pl-1">Nano · 6.2 GB</div>
+          </div>
+
+          <!-- Agent 4: Amber Accent -->
+          <div class="relative rounded-xl bg-white p-3 border border-amber-100 shadow-[0_10px_20px_-5px_rgba(245,158,11,0.12)] flex flex-col justify-between overflow-hidden">
+            <div class="absolute left-0 top-2 bottom-2 w-1 rounded-full bg-[#F59E0B]"></div>
+            <div>
+              <div class="flex items-center justify-between pl-1">
+                <span class="text-[9px] font-mono font-bold text-slate-400">A4 · CLINICAL HISTORIAN</span>
+                <span id="voteA4" class="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">CLEAR</span>
+              </div>
+              <div class="font-display font-bold text-xs text-slate-900 mt-1 pl-1">Clinical Risk Analyst</div>
+              <div class="text-[9px] text-slate-400 font-mono pl-1">Circadian Senior Triage</div>
+            </div>
+            <div class="text-[9px] font-mono text-amber-700 mt-2 font-semibold pl-1">Nano · 7.5 GB</div>
+          </div>
+
+          <!-- Agent 5: Deep Purple Commander -->
+          <div class="relative rounded-xl bg-white p-3 border border-purple-200 shadow-[0_10px_20px_-5px_rgba(76,29,149,0.15)] flex flex-col justify-between overflow-hidden">
+            <div class="absolute left-0 top-2 bottom-2 w-1 rounded-full bg-[#4C1D95]"></div>
+            <div>
+              <div class="flex items-center justify-between pl-1">
+                <span class="text-[9px] font-mono font-bold text-slate-400">A5 · MASTER COMMAND</span>
+                <span id="voteA5" class="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">CLEAR</span>
+              </div>
+              <div class="font-display font-bold text-xs text-slate-900 mt-1 pl-1">Panglima Commander</div>
+              <div class="text-[9px] text-slate-400 font-mono pl-1">Quorum & 999 Dispatch</div>
+            </div>
+            <div class="text-[9px] font-mono text-purple-700 mt-2 font-semibold pl-1">Lightning · 18.0 GB</div>
+          </div>
+        </div>
+      </div>
+      <!-- FINE-TUNED VIDEO ACTION LLM CARD (NVIDIA ATOM) -->
+      <div class="jebat-glass-card rounded-2xl p-5 border border-slate-200/90 flex flex-col space-y-3.5 shadow-[0_20px_40px_-15px_rgba(16,185,129,0.12)]">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
+          <div class="flex items-center space-x-2.5">
+            <div class="w-8 h-8 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-base text-slate-900">Fine-Tuned Video Action LLM</h3>
+              <p class="text-[11px] text-slate-500 font-mono">NVIDIA DGX Spark LoRA Action Adapter</p>
+            </div>
+          </div>
+          <button onclick="retrainActionModel()" class="px-3 py-1 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-xs font-bold transition shadow active:scale-95 flex items-center space-x-1">
+            <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+            <span id="trainBtnText">Re-Train Live</span>
+          </button>
+        </div>
+
+        <!-- Live Prediction Pill -->
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between font-mono text-xs">
+          <div>
+            <div class="text-[10px] text-slate-400 font-bold uppercase">Active Action Prediction:</div>
+            <div id="liveActionPrediction" class="font-bold text-sm text-slate-900 mt-0.5">WALKING_AMBULATION</div>
+          </div>
+          <div class="text-right">
+            <span id="liveActionConfidence" class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs">100.0% CONF</span>
+          </div>
+        </div>
+
+        <!-- Before vs After Benchmark Matrix -->
+        <div class="grid grid-cols-2 gap-2.5 text-xs font-mono pt-1">
+          <div class="p-2.5 rounded-xl bg-slate-100/80 border border-slate-200">
+            <div class="text-[10px] text-slate-500 font-bold uppercase">Base General Model (Before):</div>
+            <div class="text-sm font-bold text-slate-700 mt-0.5">62.3% Accuracy</div>
+            <div class="text-[10px] text-red-600 mt-1 font-semibold">⚠️ 44% Sujud False Alarms</div>
+          </div>
+          <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200">
+            <div class="text-[10px] text-emerald-700 font-bold uppercase">Fine-Tuned Model (After):</div>
+            <div class="text-sm font-bold text-emerald-900 mt-0.5">95.8% Accuracy (+33.5%)</div>
+            <div class="text-[10px] text-emerald-700 font-bold mt-1">✓ 0.0% False Alarms (100% Sujud)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PURPLE-BLACK ANCHOR TERMINAL: REASONING & PIPELINE LOG -->
+      <div class="jebat-terminal rounded-2xl p-4 flex flex-col text-slate-200 min-h-[140px]">
+        <div class="flex items-center justify-between pb-2 mb-2 border-b border-white/[0.08] text-xs font-mono">
+          <div class="flex items-center space-x-2">
+            <div class="flex space-x-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            </div>
+            <span class="text-zinc-400 text-xs font-semibold ml-2">jebat-terminal://guardianbox.local</span>
+          </div>
+          <span class="text-[10px] text-violet-400 bg-violet-950/60 border border-violet-800/60 px-2 py-0.5 rounded font-mono">NEMOTRON SOVEREIGN BUS</span>
+        </div>
+        <div id="agentReasoningLog" class="font-mono text-xs text-zinc-300 space-y-1.5 overflow-y-auto max-h-[120px] pr-1">
+          <div class="text-emerald-400">⚡ [15:40:00] 5-Agent Swarm warm in Grace Blackwell LPDDR5x (54.0 GB resident).</div>
+          <div class="text-zinc-400">👁️ [15:40:01] Posture verified upright. Zero video egress active.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN: LLM VIDEO RISK COCKPIT, MERS 999, 128GB MEMORY HUD (5 COLS) -->
+    <div class="lg:col-span-5 flex flex-col space-y-5">
+
+      <!-- LLM VIDEO RISK ASSESSMENT COCKPIT CARD (NVIDIA ATOM) -->
+      <div class="jebat-glass-card rounded-2xl p-5 border border-slate-200/90 flex flex-col space-y-3.5 shadow-[0_20px_40px_-15px_rgba(124,58,237,0.12)]">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
+          <div class="flex items-center space-x-2.5">
+            <div class="w-8 h-8 rounded-xl bg-violet-100 flex items-center justify-center text-violet-600">
+              <i data-lucide="shield-alert" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-base text-slate-900">LLM Video Risk Determination</h3>
+              <p class="text-[11px] text-slate-500 font-mono">Real-time Clinical Triage on NVIDIA ATOM</p>
+            </div>
+          </div>
+          <span id="videoRiskBadge" class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+            LOW RISK (8/100)
+          </span>
+        </div>
+
+        <!-- Risk Meter Progress Bar -->
+        <div class="space-y-1.5 font-mono text-xs">
+          <div class="flex items-center justify-between text-[11px]">
+            <span class="text-slate-500 font-bold uppercase">Clinical Risk Score:</span>
+            <span id="videoRiskScoreText" class="font-bold text-slate-900">8 / 100</span>
+          </div>
+          <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+            <div id="videoRiskMeterBar" style="width: 8%;" class="h-full bg-emerald-500 transition-all duration-500 rounded-full"></div>
+          </div>
+        </div>
+
+        <!-- Video Category & Hazards -->
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono space-y-2">
+          <div class="flex items-center justify-between text-[11px]">
+            <span class="text-slate-400">Classified Category:</span>
+            <span id="videoRiskCategory" class="text-slate-900 font-bold">Normal Ambulation</span>
+          </div>
+          <div class="flex items-center justify-between text-[11px]">
+            <span class="text-slate-400">Clinical Triage:</span>
+            <span id="videoRiskTriage" class="text-emerald-700 font-bold">KOD HIJAU (Safe)</span>
+          </div>
+          <div class="text-[11px] pt-1 border-t border-slate-200 text-slate-700">
+            <span class="text-slate-400">Physiological Hazards:</span>
+            <div id="videoRiskHazards" class="flex flex-wrap gap-1 mt-1">
+              <span class="px-2 py-0.5 rounded-lg bg-emerald-100 text-emerald-800 text-[10px] font-medium">None (Balanced)</span>
+            </div>
+          </div>
+          <div class="text-[10px] text-slate-500 italic pt-1 border-t border-slate-200" id="videoRiskReasoning">
+            "Upright rhythmic walking gait. Torso angle 8° from vertical axis."
+          </div>
+        </div>
+      </div>
+      <!-- MALAYSIAN EMERGENCY MERS 999 CARD (JEBAT SIGNATURE) -->
+      <div class="jebat-glass-card rounded-2xl p-5 border border-slate-200/90 flex flex-col space-y-3.5 shadow-[0_20px_40px_-15px_rgba(239,68,68,0.12)]">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
+          <div class="flex items-center space-x-2.5">
+            <span class="text-xl">🇲🇾</span>
+            <div>
+              <h3 class="font-display font-bold text-base text-slate-900">Malaysian Emergency Automation</h3>
+              <p class="text-[11px] text-slate-500 font-mono">Statutory MERS 999 & Talian Kasih Integration</p>
+            </div>
+          </div>
+          <span class="px-2.5 py-1 rounded-full bg-red-100 text-red-700 border border-red-200 font-mono font-bold text-xs">HOTLINE: 999</span>
+        </div>
+
+        <!-- Fast Dial Hotlines -->
+        <div class="grid grid-cols-2 gap-2.5">
+          <a href="tel:999" class="p-3 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-900 flex items-center justify-between transition group shadow-sm">
+            <div class="flex items-center space-x-2">
+              <div class="w-8 h-8 rounded-lg bg-red-600 text-white flex items-center justify-center group-hover:scale-105 transition">
+                <i data-lucide="phone-call" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <div class="font-display font-bold text-xs text-red-950">MERS 999</div>
+                <div class="text-[10px] text-red-600 font-mono">Ambulans / KKM</div>
+              </div>
+            </div>
+            <span class="text-[11px] font-bold text-red-700 font-mono">DIAL →</span>
+          </a>
+
+          <a href="tel:15999" class="p-3 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 flex items-center justify-between transition group shadow-sm">
+            <div class="flex items-center space-x-2">
+              <div class="w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center group-hover:scale-105 transition">
+                <i data-lucide="heart-handshake" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <div class="font-display font-bold text-xs text-amber-950">Talian Kasih</div>
+                <div class="text-[10px] text-amber-700 font-mono">KPWKM · 15999</div>
+              </div>
+            </div>
+            <span class="text-[11px] font-bold text-amber-700 font-mono">DIAL →</span>
+          </a>
+        </div>
+
+        <!-- Verbal MERS 999 Dispatch Script -->
+        <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono space-y-2">
+          <div class="flex items-center justify-between text-[11px]">
+            <span class="text-slate-500 font-bold uppercase">Official Verbal Script (Baca kepada 999):</span>
+            <button onclick="copyMersScript()" class="text-[11px] text-violet-600 hover:text-violet-700 font-bold underline flex items-center space-x-1">
+              <i data-lucide="copy" class="w-3 h-3"></i>
+              <span id="copyScriptBtnText">Salin Skrip</span>
+            </button>
+          </div>
+          <div id="mersVerbalScript" class="p-2.5 rounded-lg bg-white border border-slate-200 text-slate-800 text-[11px] leading-relaxed max-h-[85px] overflow-y-auto italic shadow-inner">
+            "Kecemasan MERS 999! Sila hantar Ambulans KKM ke alamat: No. 42, Jalan Bukit Antarabangsa, 68000 Ampang, Selangor (GPS: 3.1754° N, 101.7582° E). Mangsa: Haji Ahmad (76 tahun). Rebah di lantai, tiada respon suara. Disahkan oleh GuardianBox AI. Mohon bantuan segera!"
+          </div>
+        </div>
+      </div>
+
+      <!-- 128 GB UNIFIED MEMORY HUD (JEBAT CREATIVE) -->
+      <div class="jebat-glass-card rounded-2xl p-5 border border-slate-200/90 flex flex-col space-y-3.5">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
+          <div class="flex items-center space-x-2">
+            <div class="w-7 h-7 rounded-lg bg-violet-100 flex items-center justify-center text-violet-600">
+              <i data-lucide="database" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-base text-slate-900">128 GB Unified Memory Pool</h3>
+              <p class="text-[11px] text-slate-500 font-mono">LPDDR5x · Grace Blackwell Coherent Fabric</p>
+            </div>
+          </div>
+          <span class="text-violet-700 font-bold font-mono text-xs bg-violet-100 px-2.5 py-0.5 rounded-full border border-violet-200">54.0 GB RESIDENT</span>
+        </div>
+
+        <!-- Stacked Rainbow Progress Bar -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between text-xs font-mono">
+            <span class="text-slate-500 font-semibold">Swarm Active Allocation:</span>
+            <span class="text-slate-900 font-bold">54.0 GB / 128.0 GB (42.2%)</span>
+          </div>
+          <div class="w-full h-3.5 bg-slate-100 rounded-full overflow-hidden flex border border-slate-200 p-0.5">
+            <div title="Agent 1 (5.8 GB)" style="width: 4.5%;" class="bg-violet-600 rounded-l-full"></div>
+            <div title="Agent 2 (16.5 GB)" style="width: 12.9%;" class="bg-pink-500"></div>
+            <div title="Agent 3 (6.2 GB)" style="width: 4.8%;" class="bg-cyan-500"></div>
+            <div title="Agent 4 (7.5 GB)" style="width: 5.9%;" class="bg-amber-500"></div>
+            <div title="Agent 5 (18.0 GB)" style="width: 14.1%;" class="bg-purple-800"></div>
+            <div title="Headroom (74.0 GB)" style="width: 57.8%;" class="bg-transparent rounded-r-full"></div>
+          </div>
+        </div>
+
+        <!-- 5-Model Allocation Breakdown -->
+        <div class="grid grid-cols-2 gap-2 text-xs font-mono pt-1">
+          <div class="p-2 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+            <span class="text-slate-600 text-[11px]">A1 · Kinematics (Nano)</span>
+            <span class="font-bold text-slate-900">5.8 GB</span>
+          </div>
+          <div class="p-2 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+            <span class="text-slate-600 text-[11px]">A2 · Spatial VLM (Omni)</span>
+            <span class="font-bold text-slate-900">16.5 GB</span>
+          </div>
+          <div class="p-2 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+            <span class="text-slate-600 text-[11px]">A3 · Acoustics (Nano)</span>
+            <span class="font-bold text-slate-900">6.2 GB</span>
+          </div>
+          <div class="p-2 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+            <span class="text-slate-600 text-[11px]">A4 · Clinical (Nano 8B)</span>
+            <span class="font-bold text-slate-900">7.5 GB</span>
+          </div>
+          <div class="p-2 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+            <span class="text-slate-600 text-[11px]">A5 · Commander (Lightning)</span>
+            <span class="font-bold text-slate-900">18.0 GB</span>
+          </div>
+          <div class="p-2 rounded-xl bg-violet-50 border border-violet-200 flex items-center justify-between">
+            <span class="text-violet-700 font-bold text-[11px]">Free Headroom</span>
+            <span class="font-bold text-violet-800">74.0 GB</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- VOICE CHECK-IN & SPEECH TRIAGE (WEB SPEECH ENABLED) -->
+      <div class="jebat-glass-card rounded-2xl p-5 border border-slate-200/90 flex flex-col space-y-3">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="mic" class="w-4 h-4 text-cyan-600"></i>
+            <h3 class="font-display font-bold text-sm text-slate-900">Edge Voice Check-in & Speech Triage</h3>
+          </div>
+          <button id="btnVoiceMic" onclick="toggleWebSpeech()" class="px-2.5 py-1 rounded-full bg-cyan-50 hover:bg-cyan-100 border border-cyan-200 text-cyan-800 text-[10px] font-mono font-bold flex items-center space-x-1 transition active:scale-95 shadow-sm">
+            <i data-lucide="mic" class="w-3 h-3 text-cyan-600"></i>
+            <span id="voiceMicText">Mic Command</span>
+          </button>
+        </div>
+
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+          <div class="flex items-center space-x-2.5">
+            <div class="flex items-end space-x-0.5 h-6">
+              <span class="w-1 bg-cyan-600 rounded-full wave-bar"></span>
+              <span class="w-1 bg-cyan-600 rounded-full wave-bar"></span>
+              <span class="w-1 bg-cyan-600 rounded-full wave-bar"></span>
+              <span class="w-1 bg-cyan-600 rounded-full wave-bar"></span>
+              <span class="w-1 bg-cyan-600 rounded-full wave-bar"></span>
+              <span class="w-1 bg-cyan-600 rounded-full wave-bar"></span>
+            </div>
+            <div class="text-xs font-mono">
+              <div class="text-slate-400 text-[10px]">TTS Spoken Prompt:</div>
+              <div id="ttsPromptText" class="text-slate-800 text-[11px] font-medium italic">"Pakcik, dengar tak? Pakcik okay ke?"</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-xs font-mono space-y-1">
+          <div class="flex items-center justify-between text-slate-500 text-[11px]">
+            <span>Elderly Voice Response:</span>
+            <span id="voiceStatusBadge" class="text-[10px] text-cyan-700 bg-cyan-50 border border-cyan-200 px-2 py-0.5 rounded-full font-bold">STANDBY</span>
+          </div>
+          <div id="detectedTranscript" class="p-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 text-[11px] shadow-inner font-medium">
+            [AMBIENT ROOM AUDIO · VOCAL TRIAGE READY]
+          </div>
+
+          <!-- Quick Interactive Chips -->
+          <div class="flex flex-wrap gap-1.5 pt-1 text-[10px] font-mono">
+            <button onclick="sendVoiceText('Saya okay, pakcik elok je')" class="px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-medium">"Saya okay"</button>
+            <button onclick="sendVoiceText('Aduh tolong, sakit!')" class="px-2 py-0.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-bold">"Tolong, sakit!"</button>
+            <button onclick="sendVoiceText('GuardianBox reset')" class="px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-medium">"Reset"</button>
+            <button onclick="sendVoiceText('GuardianBox status')" class="px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-medium">"Status"</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TELEGRAM 2-WAY ESCALATION DECK -->
+      <div class="jebat-glass-card rounded-2xl p-5 border border-slate-200/90 flex flex-col space-y-3">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="send" class="w-4 h-4 text-[#0088cc]"></i>
+            <h3 class="font-display font-bold text-sm text-slate-900">Telegram Interactive Escalation</h3>
+          </div>
+          <a href="https://t.me/GuardianBox_bot" target="_blank" class="text-[10px] font-bold text-[#0088cc] bg-sky-50 border border-sky-200 px-2.5 py-0.5 rounded-full font-mono hover:underline">@GuardianBox_bot ↗</a>
+        </div>
+
+        <!-- Live Test Alert & Chat Registration -->
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono space-y-2">
+          <div class="flex items-center justify-between text-[11px]">
+            <span class="text-slate-600 font-bold">Telegram Channel:</span>
+            <span id="tgSubscribersBadge" class="text-[10px] text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full font-bold">Auto-Polling Active</span>
+          </div>
+          <button onclick="triggerTelegramTestAlert()" class="w-full py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-mono text-xs font-bold transition shadow flex items-center justify-center space-x-1.5 active:scale-95">
+            <i data-lucide="send" class="w-3.5 h-3.5 text-white"></i>
+            <span id="testTgBtnText">⚡ Uji Hantar Amaran / Test Telegram Alert</span>
+          </button>
+          <div class="flex items-center space-x-1.5 pt-1">
+            <input type="text" id="manualChatIdInput" placeholder="Masukkan Chat ID Telegram (cth: 123456789)..." class="flex-1 px-3 py-1.5 rounded-xl border border-slate-200 text-[11px] font-mono bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-violet-500">
+            <button onclick="registerManualChatId()" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs font-bold transition active:scale-95">Daftar</button>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+          <button onclick="simulateTelegramAction('ACTION:FAMILY_CLEAR')" class="p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 text-[11px] font-bold flex items-center justify-center space-x-1 transition shadow-sm">
+            <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
+            <span>✅ "I'm OK / False Alarm"</span>
+          </button>
+          <button onclick="simulateTelegramAction('ACTION:INTERCOM')" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 text-[11px] font-semibold flex items-center justify-center space-x-1 transition shadow-sm">
+            <i data-lucide="phone-call" class="w-3.5 h-3.5 text-slate-600"></i>
+            <span>📞 Open Intercom</span>
+          </button>
+          <button onclick="simulateTelegramAction('ACTION:DISPATCH_NEIGHBOR')" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 text-[11px] font-semibold flex items-center justify-center space-x-1 transition shadow-sm">
+            <i data-lucide="user-check" class="w-3.5 h-3.5 text-slate-600"></i>
+            <span>🏃 Dispatch Jiran</span>
+          </button>
+          <button onclick="simulateTelegramAction('ACTION:CALL_999')" class="p-2 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-800 text-[11px] font-bold flex items-center justify-center space-x-1 transition shadow-sm">
+            <i data-lucide="siren" class="w-3.5 h-3.5 text-red-600"></i>
+            <span>🚨 Dial 999 MERS</span>
+          </button>
+        </div>
+
+        <!-- Privacy Egress Counter -->
+        <div class="p-2.5 rounded-xl bg-violet-50/60 border border-violet-100 flex items-center justify-between text-xs font-mono">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="lock" class="w-4 h-4 text-violet-600"></i>
+            <div>
+              <div class="text-slate-800 font-bold text-[11px]">Sovereign Privacy Guarantee</div>
+              <div class="text-[10px] text-slate-500">Video egress blocked by local network firewall</div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-violet-700 font-bold text-xs">0.00 KB VIDEO EGRESS</div>
+            <div class="text-[10px] text-slate-500">112 bytes metadata only</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- 11 HUMAN POSES COUNTER-CHECK MODAL -->
+  <div id="poseModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden shadow-2xl border border-slate-200">
+      <div class="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <i data-lucide="layers" class="w-4 h-4 text-violet-600"></i>
+          <span class="text-slate-900 font-display font-bold text-base">11 Human Poses Taxonomy & Geometric Counter-Check</span>
+        </div>
+        <button onclick="closePoseModal()" class="text-slate-400 hover:text-slate-600 text-xs px-2.5 py-1 rounded-lg bg-slate-200 font-mono font-bold">Tutup ✕</button>
+      </div>
+      <div class="p-5 overflow-y-auto space-y-3 font-mono text-xs">
+        <p class="text-slate-500 text-xs">
+          GuardianBox runs multi-parameter counter-checks (Aspect Ratio, Torso Angle from vertical, Hip-Floor Ratio, and Bilateral Symmetry) to prevent false alarms:
+        </p>
+        <div id="poseCatalogList" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <!-- Populated dynamically via /api/poses -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHONE CAMERA QR CODE MODAL -->
+  <div id="phoneQrModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 flex flex-col items-center space-y-4 shadow-2xl text-center font-mono border border-slate-200">
+      <div class="flex items-center justify-between w-full border-b border-slate-200 pb-3">
+        <div class="flex items-center space-x-2 text-slate-900 font-display font-bold text-base">
+          <i data-lucide="smartphone" class="w-4 h-4 text-cyan-600"></i>
+          <span>Sambung Kamera Telefon (QR)</span>
+        </div>
+        <button onclick="closePhoneQrModal()" class="text-slate-400 hover:text-slate-600 text-xs px-2.5 py-1 rounded-lg bg-slate-100 font-bold">✕</button>
+      </div>
+
+      <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 inline-block shadow-inner">
+        <img id="phoneQrImg" src="" alt="Phone Camera QR Code" class="w-48 h-48 object-contain">
+      </div>
+
+      <div class="space-y-1.5 text-xs">
+        <div class="text-slate-900 font-bold font-display text-sm">Imbas dengan Kamera Telefon Pintar Anda</div>
+        <div class="text-slate-500 text-[11px] leading-relaxed">Telefon akan membuka halaman kamera tanpa sebarang aplikasi dan menstrim video terus ke DGX Spark secara masa nyata.</div>
+        <div id="phoneQrUrlText" class="text-cyan-700 font-bold text-[10px] bg-slate-100 p-2 rounded-lg border border-slate-200 break-all select-all mt-2">
+          http://...
+        </div>
+      </div>
+
+      <button onclick="closePhoneQrModal()" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-display font-bold transition shadow">
+        Tutup
+      </button>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // Clock
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('liveClock').innerText = now.toLocaleTimeString('en-GB') + ' MYT';
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Scenario Switcher
+    async function setScenario(name) {
+      try {
+        const res = await fetch(`/api/scenario/${name}`, { method: 'POST' });
+        const data = await res.json();
+        document.getElementById('viewportModePill').innerText = 'MODE: ' + name.toUpperCase();
+        const streamImg = document.getElementById('videoStream');
+        if (streamImg) {
+          streamImg.src = '/video_feed?t=' + Date.now();
+        }
+      } catch (err) {
+        console.error("Failed to switch scenario:", err);
+      }
+    }
+
+    async function playSampleVideo(videoId) {
+      try {
+        document.getElementById('viewportModePill').innerText = 'LOADING SAMPLE VIDEO ' + videoId + '...';
+        const res = await fetch(`/api/sample_video/${videoId}`, { method: 'POST' });
+        const data = await res.json();
+        if (data.status === 'ok') {
+          document.getElementById('viewportModePill').innerText = 'MODE: ' + data.video.name;
+          const streamImg = document.getElementById('videoStream');
+          if (streamImg) {
+            streamImg.src = '/video_feed?t=' + Date.now();
+          }
+        }
+      } catch (err) {
+        console.error("Failed to play sample video:", err);
+      }
+    }
+
+    async function resetSystem() {
+      try {
+        await fetch('/api/reset', { method: 'POST' });
+        setScenario('walk');
+      } catch (err) {
+        console.error("Failed to reset:", err);
+      }
+    }
+
+    async function simulateTelegramAction(actionCode) {
+      try {
+        await fetch(`/api/telegram/callback?action=${encodeURIComponent(actionCode)}&user=Judge%20%2F%20Family`, { method: 'POST' });
+      } catch (err) {
+        console.error("Failed telegram callback:", err);
+      }
+    }
+
+    // Video Upload Handler
+    async function handleVideoUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const formData = new FormData();
+      formData.append("file", file);
+      try {
+        document.getElementById('viewportModePill').innerText = 'UPLOADING VIDEO...';
+        const res = await fetch('/api/upload_video', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+        if (data.status === 'ok') {
+          document.getElementById('viewportModePill').innerText = 'MODE: UPLOADED (' + file.name + ')';
+        }
+      } catch (err) {
+        console.error("Video upload error:", err);
+      }
+    }
+
+    // Phone Camera QR Modal
+    function openPhoneQrModal() {
+      const modal = document.getElementById('phoneQrModal');
+      modal.classList.remove('hidden');
+      const host = window.location.host;
+      const phoneUrl = `${window.location.protocol}//${host}/phone_cam`;
+      document.getElementById('phoneQrUrlText').innerText = phoneUrl;
+      document.getElementById('phoneQrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(phoneUrl)}`;
+    }
+
+    function closePhoneQrModal() {
+      document.getElementById('phoneQrModal').classList.add('hidden');
+    }
+
+    // 11 Poses Modal
+    async function openPoseModal() {
+      const modal = document.getElementById('poseModal');
+      modal.classList.remove('hidden');
+      const list = document.getElementById('poseCatalogList');
+      if (list.children.length === 0) {
+        try {
+          const res = await fetch('/api/poses');
+          const poses = await res.json();
+          list.innerHTML = poses.map(p => `
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col space-y-1.5 shadow-sm">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-900 font-display text-xs">${p.name}</span>
+                <span class="px-2 py-0.5 rounded-full text-[9px] font-bold ${p.is_emergency ? 'bg-red-100 text-red-700 border border-red-200' : 'bg-emerald-100 text-emerald-700 border border-emerald-200'}">${p.is_emergency ? 'EMERGENCY' : 'SAFE / AMBIENT'}</span>
+              </div>
+              <p class="text-slate-600 text-[11px] leading-relaxed">${p.description}</p>
+              <div class="text-[10px] text-slate-500 pt-1 flex justify-between border-t border-slate-200">
+                <span>AR: ${p.expected_ar}</span>
+                <span>Torso: ${p.expected_torso_deg}</span>
+              </div>
+              ${p.cultural_context ? `<div class="text-[10px] text-amber-700 font-semibold">🕌 ${p.cultural_context}</div>` : ''}
+            </div>
+          `).join('');
+        } catch (e) {
+          list.innerHTML = '<div class="text-red-500">Failed to load poses catalog.</div>';
+        }
+      }
+    }
+
+    function closePoseModal() {
+      document.getElementById('poseModal').classList.add('hidden');
+    }
+
+    // Copy MERS 999 Script
+    function copyMersScript() {
+      const text = document.getElementById('mersVerbalScript').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyScriptBtnText');
+        btn.innerText = 'Tersalin! ✓';
+        setTimeout(() => { btn.innerText = 'Salin Skrip'; }, 2000);
+      });
+    }
+
+    // Web Speech API Voice Command
+    let recognition;
+    function toggleWebSpeech() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert("Web Speech API not supported in this browser. Please use Chrome/Edge or click the quick voice chips below.");
+        return;
+      }
+
+      const btn = document.getElementById('voiceMicText');
+      if (recognition && recognition.isListening) {
+        recognition.stop();
+        btn.innerText = "Mic Command";
+        return;
+      }
+
+      recognition = new SpeechRecognition();
+      recognition.lang = 'ms-MY';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.onstart = () => {
+        recognition.isListening = true;
+        btn.innerText = "Mendengar...";
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        sendVoiceText(transcript);
+      };
+
+      recognition.onerror = (e) => {
+        console.error("Speech recognition error:", e);
+        btn.innerText = "Mic Command";
+        recognition.isListening = false;
+      };
+
+      recognition.onend = () => {
+        btn.innerText = "Mic Command";
+        recognition.isListening = false;
+      };
+
+      recognition.start();
+    }
+
+    async function sendVoiceText(text) {
+      try {
+        document.getElementById('detectedTranscript').innerText = `"${text}" (Processing...)`;
+        const res = await fetch('/api/voice_command', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: text, source: "mic" })
+        });
+        const data = await res.json();
+        document.getElementById('detectedTranscript').innerText = `"${text}" → ${data.spoken_feedback}`;
+      } catch (err) {
+        console.error("Voice command error:", err);
+      }
+    }
+
+    // WebSocket Telemetry Broadcaster
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = `${protocol}//${window.location.host}/ws/telemetry`;
+    let ws;
+
+    function connectWS() {
+      ws = new WebSocket(wsUrl);
+
+      ws.onmessage = (event) => {
+        try {
+          const t = JSON.parse(event.data);
+          updateTelemetryUI(t);
+        } catch (e) {
+          console.error("Telemetry parse error:", e);
+        }
+      };
+      ws.onerror = () => {
+        try { ws.close(); } catch (_) {}
+      };
+
+      ws.onclose = () => {
+        setTimeout(connectWS, 1500);
+      };
+    }
+    connectWS();
+
+    function updateTelemetryUI(t) {
+      // Emergency Banner
+      const banner = document.getElementById('emergencyBanner');
+      const videoCard = document.getElementById('videoCard');
+      const statusBadge = document.getElementById('statusBadge');
+      const statusText = document.getElementById('statusText');
+
+      if (t.system_status === 'CRITICAL_ALERT') {
+        banner.classList.remove('hidden');
+        videoCard.classList.add('emergency-active');
+        statusBadge.className = 'flex items-center space-x-2 px-3 py-1.5 rounded-full bg-red-100 border border-red-300 text-red-800 shadow-sm';
+        statusText.innerText = 'EMERGENCY: FALL DETECTED';
+        document.getElementById('emergencyBriefingText').innerText = t.lightning.briefing || "Unresponsive fall on floor.";
+        startContinuousSiren();
+        speakEmergencyVoiceAlert(t.lightning.briefing || "Fall detected in living room.");
+      } else if (t.system_status === 'SUSPECT') {
+        banner.classList.add('hidden');
+        videoCard.classList.remove('emergency-active');
+        statusBadge.className = 'flex items-center space-x-2 px-3 py-1.5 rounded-full bg-amber-100 border border-amber-300 text-amber-800 shadow-sm';
+        statusText.innerText = 'EVALUATING: REASONING IN PROGRESS';
+        stopContinuousSiren();
+      } else {
+        banner.classList.add('hidden');
+        videoCard.classList.remove('emergency-active');
+        statusBadge.className = 'flex items-center space-x-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 shadow-sm';
+        statusText.innerText = 'SYSTEM: ' + (t.system_status || 'NORMAL');
+        stopContinuousSiren();
+      }
+
+      // Overlays
+      if (t.counter_check) {
+        document.getElementById('overlayPosture').innerText = t.counter_check.pose_name.toUpperCase();
+      } else {
+        document.getElementById('overlayPosture').innerText = (t.omni.posture || t.pose.state).toUpperCase();
+      }
+      document.getElementById('overlayDuration').innerText = (t.pose.horizontal_duration || 0.0).toFixed(1) + 's';
+
+      // Emergency MERS 999 Verbal Script Update
+      if (t.emergency_malaysia && t.emergency_malaysia.dossier && t.emergency_malaysia.dossier.verbal_script_bm) {
+        const scriptEl = document.getElementById('mersVerbalScript');
+        if (scriptEl && t.system_status === 'CRITICAL_ALERT') {
+          scriptEl.innerText = t.emergency_malaysia.dossier.verbal_script_bm;
+        }
+      }
+      // LLM Video Risk Determination Updates
+      if (t.video_risk) {
+        const vr = t.video_risk;
+        const badge = document.getElementById('videoRiskBadge');
+        const scoreText = document.getElementById('videoRiskScoreText');
+        const meterBar = document.getElementById('videoRiskMeterBar');
+        const catEl = document.getElementById('videoRiskCategory');
+        const triageEl = document.getElementById('videoRiskTriage');
+        const hazardsEl = document.getElementById('videoRiskHazards');
+        const reasonEl = document.getElementById('videoRiskReasoning');
+
+        if (scoreText) scoreText.innerText = `${vr.risk_score} / 100`;
+        if (meterBar) {
+          meterBar.style.width = `${Math.min(100, Math.max(5, vr.risk_score))}%`;
+          if (vr.risk_level === 'CRITICAL') {
+            meterBar.className = 'h-full bg-red-600 transition-all duration-500 rounded-full';
+          } else if (vr.risk_level === 'HIGH' || vr.risk_level === 'MODERATE') {
+            meterBar.className = 'h-full bg-amber-500 transition-all duration-500 rounded-full';
+          } else {
+            meterBar.className = 'h-full bg-emerald-500 transition-all duration-500 rounded-full';
+          }
+        }
+        if (badge) {
+          badge.innerText = `${vr.risk_level} RISK (${vr.risk_score}/100)`;
+          if (vr.risk_level === 'CRITICAL') {
+            badge.className = 'px-3 py-1 rounded-full text-xs font-mono font-bold bg-red-100 text-red-800 border border-red-300 animate-pulse';
+          } else if (vr.risk_level === 'HIGH' || vr.risk_level === 'MODERATE') {
+            badge.className = 'px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-100 text-amber-800 border border-amber-300';
+          } else {
+            badge.className = 'px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-200';
+          }
+        }
+        if (catEl) catEl.innerText = vr.risk_category;
+        if (triageEl) {
+          triageEl.innerText = vr.clinical_triage;
+          triageEl.className = vr.is_emergency ? 'text-red-700 font-bold' : 'text-emerald-700 font-bold';
+        }
+        if (hazardsEl && vr.injury_hazards) {
+          hazardsEl.innerHTML = vr.injury_hazards.map(h => `
+            <span class="px-2 py-0.5 rounded-lg text-[10px] font-medium ${vr.is_emergency ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}">${h}</span>
+          `).join('');
+        }
+        if (reasonEl) reasonEl.innerText = `"${vr.reasoning}"`;
+      }
+
+      // Nano Audio
+      document.getElementById('voiceStatusBadge').innerText = t.nano.status;
+      document.getElementById('detectedTranscript').innerText = t.nano.transcript;
+      document.getElementById('ttsPromptText').innerText = `"${t.nano.prompt}"`;
+
+      // Swarm Telemetry & Quorum Updates
+      if (t.swarm) {
+        if (document.getElementById('quorumConsensusScore')) {
+          document.getElementById('quorumConsensusScore').innerText = t.swarm.consensus_score || '98.0%';
+        }
+        if (document.getElementById('quorumSummaryText')) {
+          document.getElementById('quorumSummaryText').innerText = t.swarm.quorum_summary || '5-Agent Swarm resident in VRAM.';
+        }
+        const qDot = document.getElementById('quorumDot');
+        if (qDot) {
+          if (t.swarm.action === 'CRITICAL_ALERT') {
+            qDot.className = 'w-2.5 h-2.5 rounded-full bg-red-600 animate-ping';
+          } else {
+            qDot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse';
+          }
+        }
+
+        // Agent Votes
+        if (t.swarm.agents && t.swarm.agents.length >= 5) {
+          const voteElements = ['voteA1', 'voteA2', 'voteA3', 'voteA4', 'voteA5'];
+          t.swarm.agents.forEach((ag, idx) => {
+            if (idx < voteElements.length) {
+              const el = document.getElementById(voteElements[idx]);
+              if (el) {
+                el.innerText = ag.vote;
+                if (ag.vote === 'CRITICAL_ALERT') {
+                  el.className = 'px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-red-100 text-red-800 border border-red-300';
+                } else if (ag.vote === 'SUSPECT') {
+                  el.className = 'px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-amber-100 text-amber-800 border border-amber-300';
+                } else {
+                  el.className = 'px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-300';
+                }
+              }
+            }
+          });
+        }
+        // Fine-Tuned Action Prediction
+        if (t.trained_action_model) {
+          const actEl = document.getElementById('liveActionPrediction');
+          const confEl = document.getElementById('liveActionConfidence');
+          if (actEl) actEl.innerText = t.trained_action_model.action;
+          if (confEl) {
+            confEl.innerText = t.trained_action_model.confidence + ' CONF';
+            if (t.trained_action_model.is_emergency) {
+              confEl.className = 'px-2.5 py-1 rounded-full bg-red-100 text-red-800 font-bold text-xs border border-red-300';
+            } else {
+              confEl.className = 'px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs border border-emerald-200';
+            }
+          }
+        }
+      }
+      // Append to Agent Reasoning Log
+      const logContainer = document.getElementById('agentReasoningLog');
+      if (t.status_reason) {
+        const lastMsg = logContainer.lastElementChild ? logContainer.lastElementChild.innerText : '';
+        const newMsg = `[${t.timestamp}] [${t.system_status}] ${t.status_reason}`;
+        if (!lastMsg.includes(t.status_reason)) {
+          const div = document.createElement('div');
+          if (t.system_status === 'CRITICAL_ALERT') {
+            div.className = 'text-red-400 font-semibold';
+          } else if (t.system_status === 'SUSPECT') {
+            div.className = 'text-amber-300';
+          } else {
+            div.className = 'text-zinc-300';
+          }
+          div.innerText = newMsg;
+          logContainer.appendChild(div);
+          logContainer.scrollTop = logContainer.scrollHeight;
+        }
+      }
+    }
+    // Web Audio API Emergency Siren
+    let audioCtx = null;
+    let sirenInterval = null;
+    let soundAlertEnabled = true;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function playEmergencySirenTone() {
+      if (!soundAlertEnabled) return;
+      initAudio();
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sawtooth';
+      const now = audioCtx.currentTime;
+      osc.frequency.setValueAtTime(880, now);
+      osc.frequency.exponentialRampToValueAtTime(580, now + 0.35);
+      gain.gain.setValueAtTime(0.3, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.38);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 0.40);
+    }
+
+    function startContinuousSiren() {
+      if (sirenInterval) return;
+      playEmergencySirenTone();
+      sirenInterval = setInterval(playEmergencySirenTone, 750);
+    }
+
+    function stopContinuousSiren() {
+      if (sirenInterval) {
+        clearInterval(sirenInterval);
+        sirenInterval = null;
+      }
+    }
+
+    function toggleSoundAlert() {
+      soundAlertEnabled = !soundAlertEnabled;
+      const btn = document.getElementById('soundToggleText');
+      if (soundAlertEnabled) {
+        btn.innerText = "Sound Alert: ON 🔊";
+        document.getElementById('btnSoundToggle').className = "flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 border border-red-300 text-red-700 font-mono text-xs font-bold transition shadow-sm active:scale-95";
+      } else {
+        stopContinuousSiren();
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        btn.innerText = "Sound Alert: MUTED 🔇";
+        document.getElementById('btnSoundToggle').className = "flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-500 font-mono text-xs font-bold transition shadow-sm active:scale-95";
+      }
+    }
+
+    let lastSpokenTime = 0;
+    function speakEmergencyVoiceAlert(text) {
+      if (!soundAlertEnabled) return;
+      const now = Date.now();
+      if (now - lastSpokenTime < 10000) return;
+      lastSpokenTime = now;
+
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(
+          "Amaran kecemasan! Rebah dikesan di ruang tamu. Menghubungi MERS 999 dan keluarga serta-merta. Emergency alert! Fall detected in living room."
+        );
+        utterance.rate = 1.05;
+        utterance.pitch = 1.1;
+        utterance.volume = 1.0;
+        const voices = window.speechSynthesis.getVoices();
+        const myVoice = voices.find(v => v.lang.includes('ms') || v.lang.includes('id') || v.lang.includes('en'));
+        if (myVoice) utterance.voice = myVoice;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    async function triggerTelegramTestAlert() {
+      const btn = document.getElementById('testTgBtnText');
+      btn.innerText = 'Menghantar Amaran...';
+      try {
+        const res = await fetch('/api/telegram/test_alert', { method: 'POST' });
+        const data = await res.json();
+        btn.innerText = 'Amaran Dihantar ke Bot! ✓';
+        setTimeout(() => { btn.innerText = '⚡ Uji Hantar Amaran / Test Telegram Alert'; }, 3000);
+      } catch (err) {
+        btn.innerText = 'Gagal';
+        setTimeout(() => { btn.innerText = '⚡ Uji Hantar Amaran / Test Telegram Alert'; }, 2000);
+      }
+    }
+
+    async function registerManualChatId() {
+      const input = document.getElementById('manualChatIdInput');
+      const cid = input.value.trim();
+      if (!cid) return;
+      try {
+        const res = await fetch('/api/telegram/register_chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: cid })
+        });
+        const data = await res.json();
+        if (data.status === 'ok') {
+          alert(`Chat ID ${cid} berjaya didaftarkan! Mesej pengesahan telah dihantar ke Telegram.`);
+          input.value = '';
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Live Re-train Action Model
+    async function retrainActionModel() {
+      const btn = document.getElementById('trainBtnText');
+      btn.innerText = 'Training 35 Epochs...';
+      try {
+        const res = await fetch('/api/action_model/train', { method: 'POST' });
+        const data = await res.json();
+        btn.innerText = `Done! ${data.fine_tuned_accuracy}% ✓`;
+        setTimeout(() => { btn.innerText = 'Re-Train Live'; }, 3000);
+      } catch (e) {
+        btn.innerText = 'Error';
+        setTimeout(() => { btn.innerText = 'Re-Train Live'; }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>
