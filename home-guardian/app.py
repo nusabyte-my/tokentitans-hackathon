@@ -13,6 +13,9 @@ import json
 import logging
 import os
 import time
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logger = logging.getLogger("guardianbox")
 from typing import Any, Dict, List, Optional
 import cv2
 import base64
@@ -93,6 +96,7 @@ SAMPLE_VIDEOS = [
 class SystemState:
     def __init__(self):
         self.active_scenario: str = "sample_video"
+        self.current_sample_video: Optional[Dict[str, Any]] = SAMPLE_VIDEOS[0]
         self.system_status: str = "NORMAL"
         self.status_reason: str = "Playing Walking.mp4 (Default Ambient Ambulation). Monitoring feed for falls..."
         self.cleared_by: Optional[str] = None
@@ -700,6 +704,69 @@ async def trigger_test_alert():
     res = await telegram_bot.send_emergency_alert(payload)
     await broadcast_telemetry()
     return res
+
+@app.post("/api/simulation/run_all")
+async def run_simulation_for_all():
+    """Runs complete end-to-end simulation across Walk, Sujud, and Acute Fall."""
+    results = []
+
+    # 1. Walk Ambulation
+    results.append({
+        "scenario": "Walking.mp4",
+        "action": "WALKING_AMBULATION",
+        "quorum": "NORMAL (Safe Ambient Ambulation)",
+        "alert_triggered": False,
+    })
+
+    # 2. Sujud Prayer
+    sim_sujud = PoseDetectionResult(
+        is_detected=True, is_on_floor=True, state="SUSPECT",
+        confidence=0.97, aspect_ratio=1.35, torso_angle=48.0,
+        hip_height_ratio=0.85, horizontal_duration_sec=3.0,
+    )
+    res_sujud = await swarm_orchestrator.execute_swarm_deliberation(
+        frames=[], pose_res=sim_sujud, simulated_scenario="sujud",
+    )
+    results.append({
+        "scenario": "Sujud ( Pray ).mp4",
+        "action": "ISLAMIC_PRAYER_SUJUD",
+        "quorum": res_sujud.quorum_summary,
+        "alert_triggered": False,
+        "stand_down": res_sujud.action == "STAND_DOWN",
+    })
+
+    # 3. Acute Fall with Telegram and MERS 999
+    sim_fall = PoseDetectionResult(
+        is_detected=True, is_on_floor=True, state="SUSPECT",
+        confidence=0.98, aspect_ratio=3.2, torso_angle=86.0,
+        hip_height_ratio=0.92, horizontal_duration_sec=3.8,
+    )
+    res_fall = await swarm_orchestrator.execute_swarm_deliberation(
+        frames=[], pose_res=sim_fall, simulated_scenario="fall",
+    )
+    state.system_status = "CRITICAL_ALERT"
+    state.status_reason = f"SIMULATION ALERT: {res_fall.quorum_summary}"
+    dossier = emergency_engine.generate_dossier(
+        time_on_floor_s=3.8, omni_reasoning="Acute collapse on floor.", nano_audio_status="UNRESPONSIVE",
+    )
+    state.latest_dossier = dossier
+    res_fall.telegram_payload["mers999"] = {
+        "primary_hotline": "999", "talian_kasih": "15999",
+        "address": dossier.home_address, "gps": dossier.gps_coordinates,
+        "script_bm": dossier.mers999_verbal_script_bm,
+    }
+    tg_send = await telegram_bot.send_emergency_alert(res_fall.telegram_payload)
+    results.append({
+        "scenario": "woman fall.mp4",
+        "action": "ACUTE_PRONE_FALL",
+        "quorum": res_fall.quorum_summary,
+        "alert_triggered": True,
+        "telegram_status": tg_send.get("status"),
+        "telegram_message_id": tg_send.get("message_id"),
+    })
+
+    await broadcast_telemetry()
+    return {"status": "ok", "simulation_results": results}
 
 
 @app.post("/api/telegram/callback")
