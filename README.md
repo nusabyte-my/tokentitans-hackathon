@@ -211,6 +211,8 @@ Open your browser:
 
 ## 6. Live Pitch Walkthrough (5-Minute Winning Script)
 
+THE SLIDES: https://canva.link/21mnnbe3kmf8k2l
+
 1. **Minute 0:00 – 0:45 (The Real Problem & Privacy Trap):**
    - Explain why elderly parents living alone fiercely reject cloud cameras (nobody wants foreign servers streaming their home). Explain why panic pendants fail (unworn when falling).
 2. **Minute 0:45 – 2:00 (The Cultural Sujud Demo):**
